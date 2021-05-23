@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html{
+            font-family: 'Courier New', Courier, monospace;
+            background: rgb(37, 37 ,37);
+        }
+
+        .container {
+            display: grid;
+            grid-gap: 0.4em;
+        }
+        .card {
+            color: azure;
+            background-color: rgb(82, 82, 82);
+            border-radius: 5px;
+            padding: 5px;
+            min-width: 300px;
+            font-size: medium;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+    <script>
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const url = "https://spreadsheets.google.com/feeds/list/1Vn9PiX1SOAgDDKISgg86KgVMOPPOT-4xXz4CR_KU3gM/od6/public/basic?alt=json";
+        const cont = document.querySelector(".container");
+
+        fetch(url)
+        .then(response => response.json())
+        .then(
+            data =>{
+                let itm = data["feed"]["entry"];
+                console.log(itm);
+                itm.forEach(el => {
+                    let str = el['content']['$t'];
+                    let arr = str.split(",");
+                    
+                    let nameArr = arr[0].trim().replace("fname: ","");
+                    let emailArr = arr[1].trim().replace("email: ","");
+                    let commentArr = arr[2].trim().replace("comment: ","");
+
+                    // console.log(emailArr);
+                    // console.log(nameArr);
+                    // console.log(commentArr);
+                    
+                    let div = document.createElement('div');
+                    div.className = 'card';
+                    div.innerHTML = "Name: "+nameArr+'<br/>'+
+                                    "Email: "+emailArr+'<br/>'+
+                                    "Comment: "+commentArr;
+
+                    cont.appendChild(div);
+                });
+            }
+        );
+    });    
+    
+    </script>
+</body>
+</html>

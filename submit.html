@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit to google sheet</title>
+</head>
+<body>
+    <form action="post" id="myForm">
+        <label for="email">Enter your email:</label>
+        <input type="email" id="email" name="email" placeholder="johnsmith@email.com" required>
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname" placeholder="John Smith" required>
+        <label for="comment"></label>
+        <textarea id="comment" name="comment" cols="30" rows="10" placeholder="type your comment in here" required></textarea>
+        <button type="submit" id="btnSubmit">Submit</button>
+    </form>
+    <div class="lds-facebook" id="loader"><div></div><div></div><div></div></div>
+    <div id="msg"></div>
+    <script>
+        const message = document.querySelector("#msg");
+        const myform = document.querySelector("#myForm");
+        const btnSubmit = document.querySelector("#btnSubmit");
+        const url = "https://script.google.com/macros/s/AKfycbyw3u8PQQ08TghwRdkLE3R-ZP6JEM-rZSvQ4Mac_6RQQS3ZNbKUSx2C5Con92fEtP6u/exec";
+
+        myform.onsubmit = function(e){
+            e.preventDefault();
+            message.innerHTML = "Please wait...";
+            btnSubmit.disabled = true;
+            var formData = new FormData(myform);
+
+            fetch(url, {
+                body: formData,
+                method: "post"
+            }).then(function(response) {
+                message.innerHTML = "Thank you";
+                btnSubmit.disabled = false;
+                myform.reset();
+                return response.text();
+            });
+        };
+    </script>
+</body>
+</html>
